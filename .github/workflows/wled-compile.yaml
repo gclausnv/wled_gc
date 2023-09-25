@@ -22,16 +22,15 @@ jobs:
       run: |
         rm -rf /tmp/WLEDtemp/* || true
         mkdir -p /tmp/WLEDtemp
-        wget https://github.com/Aircoookie/WLED/archive/refs/heads/main.zip -O /tmp/WLEDtemp/mm.zip
+        wget https://github.com/moonmodules/WLED/archive/refs/heads/mdev.zip -O /tmp/WLEDtemp/mm.zip
         unzip /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
         find /tmp/WLEDtemp -maxdepth 1 -mindepth 1 -name "*" -type d >> /tmp/WLEDtemp/wledfoldername
         cd `cat /tmp/WLEDtemp/wledfoldername`
         echo '[env:custom_build]' >>platformio.ini
-        echo 'extends = env:nodemcuv2' >>platformio.ini
-        echo 'build_flags = ${env:nodemcuv2.build_flags} ${common.debug_flags} -D LOLIN_WIFI_FIX -D WLED_ENABLE_DMX -D LEDPIN=8 -D WLED_MAX_USERMODS=4 -D USERMOD_AUDIOREACTIVE -D USERMOD_AUTO_SAVE -D USERMOD_SENSORSTOMQTT -D USERMOD_ADS1115' >>platformio.ini
+        echo 'extends = env:esp32c3dev' >>platformio.ini
+        echo 'build_flags = ${env:esp32c3dev.build_flags} ${common.debug_flags} -D SR_DEBUG -D MIC_LOGGER -D WLED_ENABLE_DMX -D LEDPIN=8 -D DEFAULT_LED_COUNT=512 -D USERMOD_SENSORSTOMQTT -D USERMOD_ADS1115' >>platformio.ini
         echo 'lib_deps = ' >>platformio.ini
-        echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
-        echo '  https://github.com/blazoncek/arduinoFFT.git' >>platformio.ini
+        echo '  ${env:esp32c3dev.lib_deps}' >>platformio.ini
         echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
         echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
         echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
